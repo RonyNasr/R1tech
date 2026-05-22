@@ -1,0 +1,10 @@
+<svg width="80" height="80" viewBox="0 0 80 80" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>R1 Tech icon mark</title>
+  <defs>
+    <clipPath id="c"><rect x="0" y="0" width="80" height="80" rx="16"/></clipPath>
+  </defs>
+  <rect x="0" y="0" width="80" height="80" rx="16" fill="#0d1f3c"/>
+  <rect x="0" y="70" width="80" height="10" fill="#c4913a" clip-path="url(#c)"/>
+  <text x="10" y="60" font-family="Georgia, 'Times New Roman', serif" font-size="48" font-weight="700" fill="#ffffff">R</text>
+  <text x="46" y="60" font-family="Georgia, 'Times New Roman', serif" font-size="48" font-weight="700" fill="#c4913a">1</text>
+</svg>
