@@ -665,6 +665,92 @@ html[data-theme="dark"] .theme-toggle .icon-moon { display:none }
   .stats-inner{justify-content:center}
   .stat-divider{display:none}
 }
+
+/* ─── WAITLIST POPUP ─── */
+#wl-overlay {
+  position:fixed;inset:0;z-index:9000;
+  background:rgba(0,0,0,.55);
+  display:flex;align-items:center;justify-content:center;padding:1rem;
+  animation:wlFadeIn .25s var(--ease);
+}
+#wl-overlay[hidden]{display:none}
+#wl-modal {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:2.5rem 2rem 2rem;
+  max-width:440px;width:100%;
+  position:relative;
+  box-shadow:0 24px 64px rgba(0,0,0,.22);
+  animation:wlSlideUp .3s var(--ease);
+}
+#wl-close {
+  position:absolute;top:.875rem;right:.875rem;
+  background:none;border:none;cursor:pointer;
+  color:var(--ink-muted);font-size:1.35rem;line-height:1;
+  padding:.25rem .5rem;border-radius:6px;
+  transition:background .15s,color .15s;
+}
+#wl-close:hover{background:var(--surface-alt);color:var(--ink)}
+#wl-modal h2 {
+  font-family:var(--ff-display);
+  font-size:clamp(1.3rem,3vw,1.75rem);
+  font-weight:400;color:var(--navy);
+  margin:0 0 .5rem;line-height:1.2;
+}
+#wl-modal .wl-sub {
+  font-size:.9375rem;color:var(--ink-mid);margin:0 0 1.5rem;
+}
+#wl-form label {
+  display:block;font-size:.8125rem;font-weight:500;
+  letter-spacing:.04em;text-transform:uppercase;
+  color:var(--ink-muted);margin-bottom:.35rem;
+}
+#wl-form input {
+  display:block;width:100%;padding:.65rem .875rem;
+  border:1.5px solid var(--border-mid);border-radius:8px;
+  font-size:1rem;font-family:var(--ff-body);
+  background:var(--surface-alt);color:var(--ink);
+  margin-bottom:1rem;transition:border-color .15s,box-shadow .15s;
+}
+#wl-form input:focus {
+  outline:none;border-color:var(--accent);
+  box-shadow:0 0 0 3px var(--accent-light);
+}
+#wl-submit {
+  width:100%;padding:.8rem 1.5rem;
+  background:var(--accent);color:#fff;
+  border:none;border-radius:8px;
+  font-size:1rem;font-weight:500;font-family:var(--ff-body);
+  letter-spacing:.02em;cursor:pointer;
+  transition:opacity .2s,transform .1s;
+}
+#wl-submit:hover:not(:disabled){opacity:.88}
+#wl-submit:active:not(:disabled){transform:scale(.98)}
+#wl-submit:disabled{opacity:.5;cursor:not-allowed}
+#wl-error{color:#dc2626;font-size:.875rem;margin-top:.75rem}
+#wl-error[hidden]{display:none}
+#wl-success{text-align:center;padding:1rem 0}
+#wl-success h2{margin-bottom:.75rem}
+#wl-success p{font-size:.9375rem;color:var(--ink-mid);margin-bottom:1.5rem}
+#wl-done {
+  padding:.65rem 2rem;background:var(--navy);color:#fff;
+  border:none;border-radius:8px;font-size:.9375rem;font-weight:500;
+  font-family:var(--ff-body);cursor:pointer;transition:opacity .2s;
+}
+#wl-done:hover{opacity:.85}
+html[data-theme="dark"] #wl-modal {
+  background:#0F1622;border-color:var(--border);
+  box-shadow:0 24px 64px rgba(0,0,0,.55);
+}
+html[data-theme="dark"] #wl-form input {
+  background:#060C16;border-color:var(--border-mid);
+}
+html[data-theme="dark"] #wl-form input:focus {
+  box-shadow:0 0 0 3px rgba(96,165,250,.2);
+}
+@keyframes wlFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes wlSlideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 </style>
 
 <!-- Cal.com popup embed -->
