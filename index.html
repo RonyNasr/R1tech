@@ -1259,8 +1259,8 @@ window.addEventListener('scroll', () => {
     <button id="wl-close" aria-label="Close popup">&times;</button>
 
     <div id="wl-form-view">
-      <h2 id="wl-title">Get Early Access</h2>
-      <p class="wl-sub">Join the waitlist and we'll reach out when advisory slots open up.</p>
+      <h2 id="wl-title">Curious about R1 Tech?</h2>
+      <p class="wl-sub">Leave your details and we'll reach out for a brief conversation to see if we can help.</p>
       <form id="wl-form" name="waitlist" data-netlify="true" novalidate>
         <input type="hidden" name="form-name" value="waitlist"/>
         <label for="wl-name">Full name</label>
@@ -1269,14 +1269,14 @@ window.addEventListener('scroll', () => {
         <label for="wl-email">Work email</label>
         <input id="wl-email" type="email" name="email" required
                placeholder="you@company.com" autocomplete="email"/>
-        <button type="submit" id="wl-submit">Join the waitlist</button>
+        <button type="submit" id="wl-submit">Request a callback</button>
         <p id="wl-error" hidden></p>
       </form>
     </div>
 
     <div id="wl-success" style="display:none">
-      <h2>You're on the list!</h2>
-      <p>Thanks, <span id="wl-name-confirm"></span>. We'll be in touch when a slot opens.</p>
+      <h2>Thanks for reaching out!</h2>
+      <p>Got it, <span id="wl-name-confirm"></span>. We'll be in touch shortly.</p>
       <button id="wl-done">Close</button>
     </div>
   </div>
@@ -1367,7 +1367,7 @@ window.addEventListener('scroll', () => {
       errorEl.textContent = 'Something went wrong. Please try again.';
       errorEl.hidden = false;
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Join the waitlist';
+      submitBtn.textContent = 'Request a callback';
     });
   });
 }());
