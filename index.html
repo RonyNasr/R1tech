@@ -443,10 +443,40 @@ section{padding:100px 6vw}
   line-height:1.15;
 }
 .cta-text p{font-size:17px;font-weight:300;color:var(--ink-muted)}
-.cta-actions{display:flex;flex-direction:column;gap:12px;align-items:flex-end;flex-shrink:0}
-.cta-email{font-size:13px;color:var(--ink-light);font-weight:300}
-.cta-email a{color:var(--accent);text-decoration:none}
-.cta-email a:hover{text-decoration:underline}
+.cta-actions{display:flex;flex-direction:column;gap:12px;align-items:stretch;flex:1;min-width:320px}
+
+/* ─── CONTACT FORM ─── */
+#contact-form{width:100%}
+.cf-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.cf-field{display:flex;flex-direction:column;gap:.35rem;margin-bottom:12px}
+.cf-field:last-of-type{margin-bottom:0}
+.cf-field label{font-size:.8125rem;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-muted)}
+.cf-field input,.cf-field textarea{
+  padding:.65rem .875rem;
+  border:1.5px solid var(--border-mid);border-radius:8px;
+  font-size:1rem;font-family:var(--ff-body);
+  background:var(--surface);color:var(--ink);
+  transition:border-color .15s,box-shadow .15s;width:100%;
+}
+.cf-field input:focus,.cf-field textarea:focus{
+  outline:none;border-color:var(--accent);
+  box-shadow:0 0 0 3px var(--accent-light);
+}
+.cf-field textarea{resize:vertical;min-height:100px}
+#cf-submit{
+  margin-top:4px;padding:.8rem 2rem;
+  background:var(--accent);color:#fff;
+  border:none;border-radius:8px;
+  font-size:1rem;font-weight:500;font-family:var(--ff-body);
+  cursor:pointer;transition:opacity .2s;align-self:flex-start;
+}
+#cf-submit:hover:not(:disabled){opacity:.88}
+#cf-submit:disabled{opacity:.5;cursor:not-allowed}
+#cf-error{color:#dc2626;font-size:.875rem;margin-top:.5rem}
+#cf-error[hidden]{display:none}
+#cf-success{padding:.5rem 0}
+#cf-success p{font-size:1.0625rem;color:var(--ink-mid)}
+@media(max-width:600px){.cf-row{grid-template-columns:1fr}}
 
 /* ─── FOOTER ─── */
 footer{background:var(--ink);padding:64px 6vw 40px}
@@ -1110,14 +1140,34 @@ Cal("ui", {
   <div class="cta-inner">
     <div class="cta-text reveal">
       <h2 id="cta-title">Ready for a clear picture<br/>of your IT landscape?</h2>
-      <p>Start with a free 30-minute discovery call. No commitment, no sales pressure.</p>
+      <p>Send us a message — we'll get back to you within one business day.</p>
     </div>
     <div class="cta-actions reveal reveal-delay-1">
-      <button class="btn-primary js-cal-book" aria-label="Book a discovery call">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        Book a Discovery Call
-      </button>
-      <p class="cta-email">Or email us directly: <a href="mailto:hello@r1tech.eu">hello@r1tech.eu</a></p>
+      <form id="contact-form" name="waitlist" data-netlify="true" novalidate>
+        <input type="hidden" name="form-name" value="waitlist"/>
+        <div class="cf-row">
+          <div class="cf-field">
+            <label for="cf-name">Full name</label>
+            <input id="cf-name" type="text" name="name" required
+                   placeholder="Your name" autocomplete="name"/>
+          </div>
+          <div class="cf-field">
+            <label for="cf-email">Work email</label>
+            <input id="cf-email" type="email" name="email" required
+                   placeholder="you@company.com" autocomplete="email"/>
+          </div>
+        </div>
+        <div class="cf-field">
+          <label for="cf-message">Message</label>
+          <textarea id="cf-message" name="message" required rows="4"
+                    placeholder="Tell us about your situation…"></textarea>
+        </div>
+        <button type="submit" id="cf-submit">Send Message</button>
+        <p id="cf-error" hidden></p>
+      </form>
+      <div id="cf-success" hidden>
+        <p>Message sent! We'll be in touch shortly.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -1251,6 +1301,62 @@ window.addEventListener('scroll', () => {
     : '0 4px 24px rgba(0,0,0,0.06)';
   fab.classList.toggle('hidden', scrolled < window.innerHeight * 0.6);
 }, { passive: true });
+</script>
+
+<script>
+(function () {
+  var form      = document.getElementById('contact-form');
+  var submitBtn = document.getElementById('cf-submit');
+  var errorEl   = document.getElementById('cf-error');
+  var successEl = document.getElementById('cf-success');
+
+  if (!form) return;
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    errorEl.hidden = true;
+
+    var name    = document.getElementById('cf-name').value.trim();
+    var email   = document.getElementById('cf-email').value.trim();
+    var message = document.getElementById('cf-message').value.trim();
+
+    if (!name || !email || !message) {
+      errorEl.textContent = 'Please fill in all fields.';
+      errorEl.hidden = false;
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errorEl.textContent = 'Please enter a valid email address.';
+      errorEl.hidden = false;
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        'form-name': 'waitlist',
+        'name': name,
+        'email': email,
+        'message': message
+      }).toString()
+    })
+    .then(function (r) {
+      if (!r.ok) throw new Error('Server responded ' + r.status);
+      form.hidden = true;
+      successEl.hidden = false;
+    })
+    .catch(function () {
+      errorEl.textContent = 'Something went wrong. Please try again.';
+      errorEl.hidden = false;
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Message';
+    });
+  });
+}());
 </script>
 
 <!-- ─── WAITLIST POPUP ─── -->
